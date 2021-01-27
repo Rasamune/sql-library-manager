@@ -26,7 +26,14 @@ router.get('/books', asyncHandler(async (req, res) => {
 
 /* GET Create new book form. */
 router.get('/books/new', asyncHandler(async (req, res) => {
-  res.render('new-book', { title: "New Book" });
+  // Render the page with empty field values
+  res.render('new-book', { book: {
+                            title: "",
+                            author: "",
+                            genre: "",
+                            year: ""
+                          },
+                          title: "New Book" });
 }));
 
 /* POST Add new book to database. */
@@ -52,7 +59,10 @@ router.get('/books/:id', asyncHandler(async (req, res) => {
   if (book) {
     res.render('update-book', { book, title: book.title });
   } else {
-    res.render('page-not-found');
+    const err = new Error();
+    err.status = 404;
+    err.message = "Oops! It seems the page could not be found...";
+    res.render('page-not-found', {err, title: "Page Not Found"});
   }
 }));
 
