@@ -34,9 +34,12 @@ router.get('/books', asyncHandler(async (req, res) => {
     offset: page * limit,
     limit: limit,
     where: {
-      title: {
-        [Op.like]: `%${searchHistory}%`
-      }
+      [Op.or]: [
+        { title: {[Op.like]: `%${searchHistory}%`}},
+        { author: {[Op.like]: `%${searchHistory}%`}},
+        { genre: {[Op.like]: `%${searchHistory}%`}},
+        { year: {[Op.like]: `%${searchHistory}%`}}
+      ]
     }
   });
   // Pagination: The total amount of books divided by the page limit
