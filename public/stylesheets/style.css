@@ -4,7 +4,7 @@ body {
 }
 
 a {
-  color: #019875;
+  color: #05386b;
   text-decoration: none;
   font-weight: bold;
   transition: 0.4s;
@@ -16,7 +16,7 @@ a {
 
 a.button, input[type=submit] {
   color: white;
-  background: #019875;
+  background: #05386b;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
   padding: 10px 14px 12px;
   font-size: 14px;
@@ -25,7 +25,7 @@ a.button, input[type=submit] {
 }
 
 form a.button, input[type=submit] {
-  margin-left: 140px;
+  margin-left: 14px;
   transition: 0.4s;
 }
 
@@ -64,7 +64,7 @@ tr {
 }
 
 tr:nth-child(2n) {
-  background: #E7E7E7;
+  background: #EDF5E1;
 }
 
 td {
@@ -88,10 +88,27 @@ input {
 }
 
 input[type=text] {
-  margin-left: 7px;
   width: 300px;
 }
 
 .error {
   color: rgb(236, 15, 15);
+}
+
+div.search {
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+div.search form {
+  display: inline-block;
+}
+
+.pagination {
+  margin-left: 300px;
+}
+
+.pagination li {
+  display: inline-block;
+  padding: 10px;
 }

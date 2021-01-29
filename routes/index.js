@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const Op = require('sequelize').Op;
 const Book = require('../models').Book;
+
+let searchHistory = '';
 
 // Async handler so we don't need to repeat Try/Catch
 function asyncHandler(cb){
@@ -24,14 +27,38 @@ router.get('/books', asyncHandler(async (req, res) => {
   // Limit of 10 books per page
   const limit = 10;
   // Get page variable from URL
-  const page = parseInt(req.query.page);
+  let page = parseInt(req.query.page);
+  // If there is no page variable then set it to '0' by default
+  if (!page) { page = 0; }
   const { count, rows } = await Book.findAndCountAll({
     offset: page * limit,
-    limit: limit
+    limit: limit,
+    where: {
+      title: {
+        [Op.like]: `%${searchHistory}%`
+      }
+    }
   });
   // Pagination: The total amount of books divided by the page limit
   const pagination = count / limit;
-  res.render('index', { books: rows , title: "Books", pagination } );
+  // If a page number is entered in the URL that is higher than
+  // pagination then redirect to the index page
+  if (pagination >= page) {
+    res.render('index', { books: rows , title: "Books", pagination, count } );
+  } else {
+    res.redirect('/books');
+  }
+}));
+
+/* POST Set searchHistory value and redirect to books */
+router.post('/books', asyncHandler(async (req, res) => {
+  if (req.body.search) {
+    searchHistory = req.body.search;
+  } else {
+    // If search is empty or Reset button is pressed
+    searchHistory = '';
+  }
+  res.redirect('/books');
 }));
 
 /* GET Create new book form. */

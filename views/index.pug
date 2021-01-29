@@ -2,11 +2,14 @@ extends layout
 
 block content
   h1 Books
-  p
+  div
     a.button(href="/books/new") Create New Book
-  form(action="/books/" method="POST")
-    input(type="text", name="search")
-    input.search(type="submit", value="Search")
+    div.search
+      form(action="/books/" method="POST")
+        input(type="text", name="search")
+        input.search(type="submit", value="Search")
+      form(action="/books/" method="POST")
+        input.reset(type="submit", value="Reset")
   table
     thead
       tr
@@ -14,16 +17,20 @@ block content
         th Author
         th Genre
         th Year
-    tbody
-      each book in books
-        tr
-          td
-            a(href=`/books/${book.id}`)= book.title
-          td= book.author
-          td= book.genre
-          td= book.year
-  ul.pagination
-    - for(var i = 0; i < pagination; i++) {
-        li
-          a(href=`/books?page=${i}`)= i + 1
-    - }
+    if (count)
+      tbody
+        each book in books
+          tr
+            td
+              a(href=`/books/${book.id}`)= book.title
+            td= book.author
+            td= book.genre
+            td= book.year
+  if (count)
+    ul.pagination
+      - for(var i = 0; i < pagination; i++) {
+          li
+            a(href=`/books?page=${i}`)= i + 1
+      - }
+  else
+    p.no-results= 'No Results Found'
