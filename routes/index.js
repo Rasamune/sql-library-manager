@@ -21,14 +21,17 @@ router.get('/', asyncHandler(async (req, res) => {
 
 /* GET full list of books. */
 router.get('/books', asyncHandler(async (req, res) => {
+  // Limit of 10 books per page
   const limit = 10;
+  // Get page variable from URL
   const page = parseInt(req.query.page);
-  //const books = await Book.findAll();
   const { count, rows } = await Book.findAndCountAll({
-    offest: page * limit,
+    offset: page * limit,
     limit: limit
   });
-  res.render('index', { books: rows , title: "Books" } );
+  // Pagination: The total amount of books divided by the page limit
+  const pagination = count / limit;
+  res.render('index', { books: rows , title: "Books", pagination } );
 }));
 
 /* GET Create new book form. */
