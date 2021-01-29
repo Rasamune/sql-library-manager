@@ -33,9 +33,17 @@ input[type=submit] {
   border: 0;
 }
 
-  a.button:hover, input[type=submit]:hover {
-    background-color: #01b189;
-  }
+a.button:hover, input[type=submit]:hover {
+  background-color: #01b189;
+}
+
+a:hover {
+  color: #01b189;
+}
+
+a.button:hover {
+  color: white;
+}
 
 p {
   margin: 20px auto;
