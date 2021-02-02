@@ -95,7 +95,7 @@ router.post('/books/new', asyncHandler(async (req, res) => {
 }));
 
 /* GET Show the book detail form. */
-router.get('/books/:id', asyncHandler(async (req, res) => {
+router.get('/books/:id', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   if (book) {
     res.render('update-book', { book, title: book.title });
@@ -103,12 +103,12 @@ router.get('/books/:id', asyncHandler(async (req, res) => {
     const err = new Error();
     err.status = 404;
     err.message = "Oops! It seems the page could not be found...";
-    res.render('page-not-found', {err, title: "Page Not Found"});
+    next(err);
   }
 }));
 
 /* POST Updates book info in the database. */
-router.post('/books/:id', asyncHandler(async (req, res) => {
+router.post('/books/:id', asyncHandler(async (req, res, next) => {
   let book;
   try {
     book = await Book.findByPk(req.params.id);
@@ -120,7 +120,7 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
       const err = new Error();
       err.status = 404;
       err.message = "Oops! It seems the page could not be found...";
-      res.render('page-not-found', {err, title: "Page Not Found"});
+      next(err);
     }
   } catch (error) {
     if(error.name === "SequelizeValidationError") {
@@ -134,7 +134,7 @@ router.post('/books/:id', asyncHandler(async (req, res) => {
 }));
 
 /* POST Deletes a book from the database. */
-router.post('/books/:id/delete', asyncHandler(async (req, res) => {
+router.post('/books/:id/delete', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   if(book) {
     // Delete the selected book from the database
@@ -144,7 +144,7 @@ router.post('/books/:id/delete', asyncHandler(async (req, res) => {
     const err = new Error();
     err.status = 404;
     err.message = "Oops! It seems the page could not be found...";
-    res.render('page-not-found', {err, title: "Page Not Found"});
+    next(err);
   }
 }));
 

@@ -38,19 +38,18 @@ app.use(function(req, res, next) {
   const err = new Error();
   err.status = 404;
   err.message = "Oops! It seems the page could not be found...";
-  res.render('page-not-found', {err, title: "Page Not Found"});
+  next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message || "Oops! It seems like there was a problem...";
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
   console.log(err.status, err.message);
-  res.render('error', {err, title: "Server Error"});
+  if (err.status === 404) {
+    res.status(404).render('page-not-found', { err, title: "Page Not Found "});
+  } else {
+    err.message = err.message || 'Oops! It looks like something went wrong on the server.';
+    res.status(err.status || 500).render('error', {err, title: "Server Error"});
+  }
 });
 
 module.exports = app;
